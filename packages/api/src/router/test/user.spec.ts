@@ -44,6 +44,7 @@ describe("initUser should initialize the first user", () => {
     const caller = userRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: null,
     });
 
@@ -68,6 +69,7 @@ describe("initUser should initialize the first user", () => {
     const caller = userRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: null,
     });
 
@@ -93,6 +95,7 @@ describe("initUser should initialize the first user", () => {
     const caller = userRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: null,
     });
 
@@ -114,6 +117,7 @@ describe("register should create a user with valid invitation", () => {
     const caller = userRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: null,
     });
 
@@ -170,6 +174,7 @@ describe("register should create a user with valid invitation", () => {
       const caller = userRouter.createCaller({
         db,
         deviceType: undefined,
+      headers: new Headers(),
         session: null,
       });
 
@@ -213,6 +218,7 @@ describe("editProfile shoud update user", () => {
     const caller = userRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSession,
     });
 
@@ -250,6 +256,7 @@ describe("editProfile shoud update user", () => {
     const caller = userRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSession,
     });
 
@@ -286,6 +293,7 @@ describe("delete should delete user", () => {
     const caller = userRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSession,
     });
 

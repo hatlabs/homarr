@@ -18,10 +18,20 @@ export {
 export { createIntegrationHistoryChannel } from "./lib/channels/history-channel";
 
 export const exampleChannel = createSubPubChannel<{ message: string }>("example");
-export const pingChannel = createSubPubChannel<
-  { url: string; statusCode: number; durationMs: number } | { url: string; error: string }
->("ping");
-export const pingUrlChannel = createListChannel<string>("ping-url");
+
+// Ping pub/sub messages and the list of pending entries are keyed by the
+// owning app's id rather than its URL. Path-only `app.href` values resolve to
+// different absolute URLs across clients on different hostnames; using the
+// stable `app.id` keeps subscribers correctly matched.
+export interface PingEntry {
+  id: string;
+  url: string;
+}
+export type PingResult =
+  | { id: string; url: string; statusCode: number; durationMs: number }
+  | { id: string; url: string; error: string };
+export const pingChannel = createSubPubChannel<PingResult>("ping");
+export const pingUrlChannel = createListChannel<PingEntry>("ping-url");
 
 export const homeAssistantEntityState = createSubPubChannel<{
   entityId: string;

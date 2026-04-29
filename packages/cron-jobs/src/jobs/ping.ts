@@ -25,21 +25,29 @@ export const pingJob = createCronJob("ping", EVERY_MINUTE, {
     return;
   }
 
-  const urls = await pingUrlChannel.getAllAsync();
+  const entries = await pingUrlChannel.getAllAsync();
 
-  await Promise.allSettled([...new Set(urls)].map(pingAsync));
+  // Dedup by id — multiple subscribers for the same app coalesce into one ping.
+  // (Two distinct apps that happen to share a URL still ping independently.)
+  const uniqueById = new Map<string, { id: string; url: string }>();
+  for (const entry of entries) {
+    if (!uniqueById.has(entry.id)) uniqueById.set(entry.id, entry);
+  }
+
+  await Promise.allSettled([...uniqueById.values()].map(pingAsync));
 });
 
-const pingAsync = async (url: string) => {
+const pingAsync = async ({ id, url }: { id: string; url: string }) => {
   const pingResult = await sendPingRequestAsync(url);
 
   if ("statusCode" in pingResult) {
-    logger.debug("Executed ping successfully", { url, statusCode: pingResult.statusCode });
+    logger.debug("Executed ping successfully", { id, url, statusCode: pingResult.statusCode });
   } else {
-    logger.error(new ErrorWithMetadata("Executing ping failed", { url }, { cause: pingResult.error }));
+    logger.error(new ErrorWithMetadata("Executing ping failed", { id, url }, { cause: pingResult.error }));
   }
 
   await pingChannel.publishAsync({
+    id,
     url,
     ...pingResult,
   });

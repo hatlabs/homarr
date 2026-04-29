@@ -1,10 +1,31 @@
 import { z } from "zod/v4";
 
-export const appHrefSchema = z
+// `appHrefSchema` accepts:
+//   - empty string -> null
+//   - absolute URL with http/https scheme (or any non-javascript scheme)
+//   - path-only URL starting with "/" followed by a non-"/" character
+//
+// Path-only hrefs are resolved against the current origin in the browser, and
+// against the request origin server-side via `resolveServerUrl`. This lets a
+// single dashboard work across multiple hostnames (mDNS, VPN FQDN, DHCP DNS).
+//
+// Rejects: javascript: scheme, protocol-relative ("//host/..."), single-slash
+// root ("/"), bare strings without scheme or leading slash.
+const absoluteHrefSchema = z
   .string()
   .trim()
   .url()
-  .regex(/^(?!javascript)[a-zA-Z]*:\/\//i) // javascript: is not allowed, i for case insensitive (so Javascript: is also not allowed)
+  .regex(/^(?!javascript)[a-zA-Z]*:\/\//i);
+
+const pathOnlyHrefSchema = z
+  .string()
+  .trim()
+  // Leading slash followed by a non-slash character. Rejects "/" alone and
+  // protocol-relative "//host/...".
+  .regex(/^\/[^/]/);
+
+export const appHrefSchema = absoluteHrefSchema
+  .or(pathOnlyHrefSchema)
   .or(z.literal(""))
   .transform((value) => (value.length === 0 ? null : value))
   .nullable();

@@ -27,6 +27,7 @@ describe("getAll server settings", () => {
     const caller = serverSettingsRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: null,
     });
 
@@ -46,6 +47,7 @@ describe("getAll server settings", () => {
     const caller = serverSettingsRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSession,
     });
 
@@ -61,6 +63,7 @@ describe("saveSettings", () => {
     const caller = serverSettingsRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSession,
     });
 

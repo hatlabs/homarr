@@ -34,6 +34,7 @@ describe("all should return all integrations", () => {
     const caller = integrationRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSessionWithPermissions(),
     });
 
@@ -65,6 +66,7 @@ describe("byId should return an integration by id", () => {
     const caller = integrationRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSessionWithPermissions(["integration-full-all"]),
     });
 
@@ -92,6 +94,7 @@ describe("byId should return an integration by id", () => {
     const caller = integrationRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSessionWithPermissions(["integration-full-all"]),
     });
 
@@ -104,6 +107,7 @@ describe("byId should return an integration by id", () => {
     const caller = integrationRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSessionWithPermissions(["integration-full-all"]),
     });
 
@@ -152,6 +156,7 @@ describe("byId should return an integration by id", () => {
     const caller = integrationRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSessionWithPermissions(["integration-interact-all"]),
     });
 
@@ -178,6 +183,7 @@ describe("create should create a new integration", () => {
     const caller = integrationRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSessionWithPermissions(["integration-create"]),
     });
     const input = {
@@ -213,6 +219,7 @@ describe("create should create a new integration", () => {
     const caller = integrationRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSessionWithPermissions(["integration-create"]),
     });
     const input = {
@@ -256,6 +263,7 @@ describe("create should create a new integration", () => {
     const caller = integrationRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSessionWithPermissions(["integration-create", "app-create"]),
     });
     const input = {
@@ -313,6 +321,7 @@ describe("create should create a new integration", () => {
     const caller = integrationRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSessionWithPermissions(["integration-create"]),
     });
     const input = {
@@ -353,6 +362,7 @@ describe("create should create a new integration", () => {
     const caller = integrationRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSessionWithPermissions(["integration-interact-all"]),
     });
     const input = {
@@ -376,6 +386,7 @@ describe("create should create a new integration", () => {
     const caller = integrationRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSessionWithPermissions(["integration-create"]),
     });
     const input = {
@@ -407,6 +418,7 @@ describe("update should update an integration", () => {
     const caller = integrationRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSessionWithPermissions(["integration-full-all"]),
     });
 
@@ -490,6 +502,7 @@ describe("update should update an integration", () => {
     const caller = integrationRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSessionWithPermissions(["integration-full-all"]),
     });
 
@@ -510,6 +523,7 @@ describe("update should update an integration", () => {
     const caller = integrationRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSessionWithPermissions(["integration-interact-all"]),
     });
 
@@ -534,6 +548,7 @@ describe("delete should delete an integration", () => {
     const caller = integrationRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSessionWithPermissions(["integration-full-all"]),
     });
 
@@ -568,6 +583,7 @@ describe("delete should delete an integration", () => {
     const caller = integrationRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSessionWithPermissions(["integration-interact-all"]),
     });
 

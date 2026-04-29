@@ -39,6 +39,7 @@ describe("all should return all existing invites without sensitive informations"
     const caller = inviteRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSession,
     });
 
@@ -74,6 +75,7 @@ describe("all should return all existing invites without sensitive informations"
     const caller = inviteRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSession,
     });
 
@@ -114,6 +116,7 @@ describe("create should create a new invite expiring on the specified date with 
     const caller = inviteRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSession,
     });
     await db.insert(users).values({
@@ -146,6 +149,7 @@ describe("delete should remove invite by id", () => {
     const caller = inviteRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSession,
     });
 
@@ -184,6 +188,7 @@ describe("delete should remove invite by id", () => {
     const caller = inviteRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: defaultSession,
     });
 

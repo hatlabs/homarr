@@ -3,6 +3,17 @@
 import { Anchor, Card, Flex, Group, Stack, Text, Title, UnstyledButton } from "@mantine/core";
 import combineClasses from "clsx";
 
+// Path-only hrefs (e.g. "/cockpit/") aren't valid input to `new URL`, so the
+// sub-label falls back to the path itself with the trailing slash trimmed.
+const renderHostnameSubLabel = (href: string | null | undefined): string | undefined => {
+  if (!href) return undefined;
+  try {
+    return new URL(href).hostname;
+  } catch {
+    return href.length > 1 && href.endsWith("/") ? href.slice(0, -1) : href;
+  }
+};
+
 import type { RouterOutputs } from "@homarr/api";
 import { clientApi } from "@homarr/api/client";
 import { useRequiredBoard } from "@homarr/boards/context";
@@ -232,7 +243,7 @@ const VerticalItem = ({
       )}
       {!hideHostname && (
         <Anchor ta="center" component="span" size="xs">
-          {app.href ? new URL(app.href).hostname : undefined}
+          {renderHostnameSubLabel(app.href)}
         </Anchor>
       )}
     </Stack>
@@ -279,7 +290,7 @@ const HorizontalItem = ({
 
             {!hideHostname && (
               <Anchor component="span" size="xs">
-                {app.href ? new URL(app.href).hostname : undefined}
+                {renderHostnameSubLabel(app.href)}
               </Anchor>
             )}
           </Stack>

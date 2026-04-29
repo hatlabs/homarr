@@ -2,8 +2,10 @@ import { TRPCError } from "@trpc/server";
 import { observable } from "@trpc/server/observable";
 import { z } from "zod/v4";
 
+import { resolveServerUrl } from "@homarr/common";
 import { getServerSettingByKeyAsync } from "@homarr/db/queries";
 import { sendPingRequestAsync } from "@homarr/ping";
+import type { PingResult } from "@homarr/redis";
 import { pingChannel, pingUrlChannel } from "@homarr/redis";
 
 import { createTRPCRouter, publicProcedure } from "../../trpc";
@@ -29,7 +31,7 @@ export const appRouter = createTRPCRouter({
       });
     }
 
-    const pingUrl = app.pingUrl ?? app.href;
+    const pingUrl = resolveServerUrl(app, ctx.headers);
 
     if (!pingUrl) {
       throw new TRPCError({
@@ -70,7 +72,7 @@ export const appRouter = createTRPCRouter({
         });
       }
 
-      const pingUrl = app.pingUrl ?? app.href;
+      const pingUrl = resolveServerUrl(app, ctx.headers);
 
       if (!pingUrl) {
         throw new TRPCError({
@@ -79,21 +81,22 @@ export const appRouter = createTRPCRouter({
         });
       }
 
-      await pingUrlChannel.addAsync(pingUrl);
+      const entry = { id: app.id, url: pingUrl };
+      await pingUrlChannel.addAsync(entry);
 
-      return observable<{ url: string; statusCode: number; durationMs: number } | { url: string; error: string }>(
-        (emit) => {
-          const unsubscribe = pingChannel.subscribe((message) => {
-            // Only emit if same url
-            if (message.url !== pingUrl) return;
-            emit.next(message);
-          });
+      return observable<PingResult>((emit) => {
+        const unsubscribe = pingChannel.subscribe((message) => {
+          // Filter by app id rather than URL: path-only hrefs resolve to
+          // different absolute URLs across clients on different hostnames,
+          // but the app id is stable.
+          if (message.id !== app.id) return;
+          emit.next(message);
+        });
 
-          return () => {
-            unsubscribe();
-            void pingUrlChannel.removeAsync(pingUrl);
-          };
-        },
-      );
+        return () => {
+          unsubscribe();
+          void pingUrlChannel.removeAsync(entry);
+        };
+      });
     }),
 });

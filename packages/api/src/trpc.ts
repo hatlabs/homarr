@@ -44,6 +44,9 @@ export const createTRPCContext = (opts: { headers: Headers; session: Session | n
     session,
     deviceType: userAgent(opts.headers).device.type,
     db,
+    // Exposed so server-side procedures and middlewares can resolve path-only
+    // app hrefs against the request origin via `resolveServerUrl`.
+    headers: opts.headers,
   };
 };
 

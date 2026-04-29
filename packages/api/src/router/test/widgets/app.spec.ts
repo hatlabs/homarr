@@ -32,6 +32,7 @@ describe("ping should call sendPingRequestAsync with url and return result", () 
     const caller = appRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: null,
     });
 
@@ -55,6 +56,7 @@ describe("ping should call sendPingRequestAsync with url and return result", () 
     const caller = appRouter.createCaller({
       db,
       deviceType: undefined,
+      headers: new Headers(),
       session: null,
     });
 

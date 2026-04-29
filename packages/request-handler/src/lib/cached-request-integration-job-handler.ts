@@ -1,6 +1,6 @@
 import SuperJSON from "superjson";
 
-import { hashObjectBase64, Stopwatch } from "@homarr/common";
+import { hashObjectBase64, resolveServerUrl, Stopwatch } from "@homarr/common";
 import { decryptSecret } from "@homarr/common/server";
 import type { MaybeArray } from "@homarr/common/types";
 import { createLogger } from "@homarr/core/infrastructure/logs";
@@ -94,7 +94,9 @@ export const createRequestIntegrationJobHandler = <
             ...integration,
             kind: integration.kind as TIntegrationKind,
             decryptedSecrets,
-            externalUrl: integration.app?.href ?? null,
+            // No request headers in background-job context: path-only hrefs
+            // resolve to null here, matching today's `?? null` behavior.
+            externalUrl: integration.app ? resolveServerUrl(integration.app, null) : null,
           },
           input,
         );
