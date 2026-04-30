@@ -64,6 +64,9 @@ upstream-relevant change. Fork-only material includes:
 - `.github/workflows/deployment-fork-image.yml`
 - The `if: github.repository == 'homarr-labs/homarr'` guards added to
   upstream workflows
+- `docs/halos/` — fork-specific notes and learnings (organised under
+  `learnings/` with YAML frontmatter; relevant when implementing or
+  debugging fork-side patterns)
 - Anything else that only makes sense in the `hatlabs/homarr` context
 
 This way the upstream PR can be prepared by cherry-picking the
