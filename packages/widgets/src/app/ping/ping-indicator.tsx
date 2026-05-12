@@ -1,6 +1,7 @@
 import { Suspense, useState } from "react";
 import { IconCheck, IconLoader, IconX } from "@tabler/icons-react";
 import { TRPCClientError } from "@trpc/client";
+import type { DefaultErrorData } from "@trpc/server/unstable-core-do-not-import";
 import type { FallbackProps } from "react-error-boundary";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -32,8 +33,11 @@ export const PingIndicator = ({ appId }: PingIndicatorProps) => {
 // so the card stays usable. Other tRPC errors (FORBIDDEN, NOT_FOUND, …) are
 // re-thrown so the widget's outer error boundary handles them as before.
 const PingIndicatorErrorFallback = ({ error }: FallbackProps) => {
-  if (error instanceof TRPCClientError && error.data?.code === "CONFLICT") {
-    return <PingDot icon={IconLoader} color="orange" tooltip={error.message} />;
+  if (error instanceof TRPCClientError) {
+    const errorData = error.data as DefaultErrorData | undefined;
+    if (errorData?.code === "CONFLICT") {
+      return <PingDot icon={IconLoader} color="orange" tooltip={error.message} />;
+    }
   }
   throw error;
 };
