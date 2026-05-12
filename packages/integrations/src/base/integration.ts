@@ -159,6 +159,7 @@ export abstract class Integration {
  * break the SPA-routing callers this method exists to serve.
  */
 export class RenderablePath {
+  public readonly hostname = "";
   public readonly searchParams: URLSearchParams;
   private readonly pathOnly: string;
 
@@ -186,10 +187,6 @@ export class RenderablePath {
         this.searchParams.set(key, value instanceof Date ? value.toISOString() : value.toString());
       }
     }
-  }
-
-  public get hostname(): string {
-    return "";
   }
 
   public get pathname(): string {
