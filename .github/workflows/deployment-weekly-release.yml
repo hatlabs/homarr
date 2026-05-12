@@ -17,6 +17,7 @@ permissions:
 
 jobs:
   create-and-merge-pr:
+    if: github.repository == 'homarr-labs/homarr'
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
