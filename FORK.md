@@ -53,3 +53,24 @@ minimizes rebase conflicts when pulling new upstream commits.
 Each fork branch should land via a normal hatlabs internal PR. The eventual
 upstream PR (where applicable) is prepared as a separate, narrower branch
 rebased onto the upstream merge target (`dev`).
+
+### Commit hygiene for upstream-bound branches
+
+Fork branches that are intended to also land upstream must keep
+**fork-only** changes in dedicated commits, separate from the
+upstream-relevant change. Fork-only material includes:
+
+- `FORK.md`
+- `.github/workflows/deployment-fork-image.yml`
+- The `if: github.repository == 'homarr-labs/homarr'` guards added to
+  upstream workflows
+- `docs/halos/` — fork-specific notes and learnings (organised under
+  `learnings/` with YAML frontmatter; relevant when implementing or
+  debugging fork-side patterns)
+- Anything else that only makes sense in the `hatlabs/homarr` context
+
+This way the upstream PR can be prepared by cherry-picking the
+upstream-relevant commits only — typically a single contiguous range —
+without manual file-level surgery. Convention: one leading commit
+(`ci(fork): …`) carries every fork-only file; subsequent commits carry
+the upstream-bound changes.
